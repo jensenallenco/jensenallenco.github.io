@@ -252,3 +252,10 @@ body {
     border: 1px solid #334155;
     text-align: center;
 }
+
+/* Nav active state */
+.nav-current {
+    color: #ffffff !important;
+    font-weight: 700;
+    text-decoration: underline;
+}
