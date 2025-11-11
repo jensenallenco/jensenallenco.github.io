@@ -3,27 +3,75 @@
   const drawer = document.getElementById('mobile-drawer');
   const closeBtn = document.getElementById('nav-close');
   const backdrop = document.getElementById('drawer-backdrop');
+  let lastFocused = null;
 
-  if(!toggleBtn || !drawer) return;
+  if(!drawer) return; // nothing to do
+
+  function getFocusable(container) {
+    return Array.from(container.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])')).filter(el => !el.hasAttribute('disabled'));
+  }
 
   function openDrawer() {
-    drawer.classList.remove('hidden');
-    toggleBtn.setAttribute('aria-expanded','true');
-    const focusable = drawer.querySelector('a,button');
-    if (focusable) focusable.focus();
+    lastFocused = document.activeElement;
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded','true');
     document.body.style.overflow = 'hidden';
-  }
-  function closeDrawer() {
-    drawer.classList.add('hidden');
-    toggleBtn.setAttribute('aria-expanded','false');
-    toggleBtn.focus();
-    document.body.style.overflow = '';
+    // focus first focusable inside drawer
+    const focusable = getFocusable(drawer)[0];
+    if (focusable) focusable.focus();
   }
 
-  toggleBtn.addEventListener('click', openDrawer);
-  closeBtn && closeBtn.addEventListener('click', closeDrawer);
-  backdrop && backdrop.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !drawer.classList.contains('hidden')) closeDrawer(); });
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+    // restore focus
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  }
+
+  // Toggle
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', (e)=>{
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      expanded ? closeDrawer() : openDrawer();
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+  // Close on link click and trap focus
+  drawer.addEventListener('click', (e)=>{
+    const a = e.target.closest('a');
+    if (a) {
+      // allow external links to proceed but close drawer on click
+      closeDrawer();
+      return;
+    }
+  });
+
+  // Simple focus trap inside drawer
+  drawer.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape') { if (drawer.classList.contains('open')) closeDrawer(); return; }
+    if (e.key !== 'Tab') return;
+    const focusable = getFocusable(drawer);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+
+  // Close on Escape when focus outside drawer
+  document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
 })();
 
 // Set aria-current and visual active state for nav links
