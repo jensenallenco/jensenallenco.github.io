@@ -8,88 +8,31 @@
     <link rel="icon" type="image/webp" href="https://tr.rbxcdn.com/180DAY-e3b172c999c4bbc6ef671fcad60e51d0/256/256/Image/Webp/noFilter">
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="./features/nav/load-nav.js" defer></script>
 </head>
 <body>
-
-        <!-- Top navigation (feature: nav) -->
-        <nav class="sticky top-0 z-40 bg-slate-900/70 backdrop-blur-sm border-b border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center gap-3">
-                        <a href="/" class="flex items-center gap-3">
-                            <span class="text-sky-400 font-bold">jensenallenco</span>
-                        </a>
-                    </div>
-
-                    <!-- Mobile hamburger toggle -->
-                    <div class="flex items-center md:hidden">
-                        <button id="nav-toggle" aria-controls="mobile-drawer" aria-expanded="false" aria-label="Open navigation" class="-mr-2 inline-flex items-center justify-center rounded-md text-slate-300 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 p-2">
-                            <!-- hamburger icon -->
-                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="hidden md:flex md:items-center md:space-x-6">
-                        <a href="/" class="text-slate-300 hover:text-white">Projects</a>
-                        <a href="#" class="text-slate-300 hover:text-white">Guides</a>
-                        <a href="#" class="text-slate-300 hover:text-white">Changelog</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- mobile drawer removed from here and rendered after the nav to avoid fixed positioning being contained by nav's stacking context -->
-        </nav>
-
-        <!-- Mobile drawer (moved outside nav so it's positioned relative to the viewport) -->
-            <div id="mobile-drawer" class="fixed inset-0 z-50" aria-hidden="true">
-            <div id="drawer-backdrop" class="absolute inset-0 bg-black/50"></div>
-            <div id="drawer-panel" class="drawer-panel absolute right-0 top-0 h-full w-80 bg-slate-900 border-l border-slate-800 p-4 overflow-auto">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="sr-only">Navigation</span>
-                    <button id="nav-close" aria-label="Close menu" class="p-1 text-slate-300 hover:bg-slate-800 rounded"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-                </div>
-                <nav class="flex flex-col gap-3" aria-label="Primary">
-                    <a href="/" class="px-2 py-2 rounded hover:bg-slate-800">Projects</a>
-                    <a href="/guides.html" class="px-2 py-2 rounded hover:bg-slate-800">Guides</a>
-                    <a href="/changelog.html" class="px-2 py-2 rounded hover:bg-slate-800">Changelog</a>
-                </nav>
-            </div>
-        </div>
+    <div id="site-nav"></div>
 
     <!-- Main Content -->
     <main class="container mx-auto p-3 md:p-4 lg:p-8 max-w-7xl">
         <!-- Header -->
         <div class="header-section">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 items-center">
+            <nav aria-label="Breadcrumb" class="mb-4 text-xs md:text-sm flex items-center gap-2 text-slate-400">
+                <a href="/" class="hover:text-slate-200">Cultivation Simulator Tools</a>
+                <span class="opacity-50">›</span>
+                <span class="text-slate-200 font-semibold" aria-current="page">Elixir Calculator</span>
+            </nav>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 items-start">
                 <!-- Left: Title and Info -->
-                <div class="lg:col-span-1">
-                    <h1 class="text-2xl md:text-3xl font-bold">Elixir Calculator</h1>
-                    <p class="mt-2 text-sm md:text-base text-slate-300">Calculate total points and stats from your elixirs</p>
-                    
-                    <!-- Quick Links -->
-                    <div class="flex gap-2 md:gap-3 mt-3 md:mt-4 justify-center flex-wrap">
-                        <a href="./upgrades.html" class="social-link text-sm md:text-base">
-                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                            <span>Upgrade Calculator</span>
-                        </a>
-                        <a href="https://www.roblox.com/games/18645473062/Guild-War-V35-Cultivation-Mortal-to-Immortal" target="_blank" rel="noopener noreferrer" class="social-link text-sm md:text-base">
-                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.403 3.892L3.896 0 0 14.506l14.507 3.896L24 3.893z"/></svg>
-                            <span>Play</span>
-                        </a>
-                        <a href="https://discord.com/invite/gFgcEavupb" target="_blank" rel="noopener noreferrer" class="social-link text-sm md:text-base">
-                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                            <span>Discord</span>
-                        </a>
-                    </div>
-                    <div class="mt-4 text-center">
-                    </div>
+                <div class="lg:col-span-1 relative rounded-2xl border border-slate-700/40 bg-slate-900/60 backdrop-blur-sm p-5 md:p-6">
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-sky-400" aria-describedby="elixir-desc">Elixir Calculator</h1>
+                    <p id="elixir-desc" class="mt-2 text-sm md:text-base text-slate-300">Calculate total point allocations and absorb stats from your selected elixirs.</p>
+                    <!-- Header actions moved to top navigation to avoid redundancy -->
                 </div>
 
                 <!-- Right: Rarity Point Values Table -->
-                <div class="lg:col-span-2 bg-gradient-to-br from-slate-800/60 to-slate-800/30 rounded-xl border border-slate-700/50 p-3 md:p-5 shadow-lg">
+                <div class="lg:col-span-2 bg-gradient-to-br from-slate-800/60 to-slate-800/30 rounded-2xl border border-slate-700/50 p-3 md:p-5 shadow-lg">
                     <h3 class="text-sm md:text-base font-semibold text-slate-200 mb-3 md:mb-4">Rarity Point Values</h3>
                     <!-- First row: 6 items (Common to Scarce) -->
                     <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 sm:gap-2.5 mb-1.5 sm:mb-2.5">
@@ -175,8 +118,6 @@
                 </div>
             </div>
         </div>
-    <script src="./features/nav/nav.js" defer></script>
     <script src="./features/calculator/calculator.js" defer></script>
-
 </body>
 </html>

@@ -9,71 +9,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="./features/nav/load-nav.js" defer></script>
 </head>
 <body>
-
-    <!-- Top navigation -->
-    <nav class="sticky top-0 z-40 bg-slate-900/70 backdrop-blur-sm border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <a href="/" class="flex items-center gap-3">
-                        <span class="text-sky-400 font-bold">jensenallenco</span>
-                    </a>
-                </div>
-
-                <!-- Mobile hamburger toggle -->
-                <div class="flex items-center md:hidden">
-                    <button id="nav-toggle" aria-controls="mobile-drawer" aria-expanded="false" aria-label="Open navigation" class="-mr-2 inline-flex items-center justify-center rounded-md text-slate-300 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 p-2">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="hidden md:flex md:items-center md:space-x-6">
-                    <a href="/" class="text-slate-300 hover:text-white">Projects</a>
-                    <a href="#" class="text-slate-300 hover:text-white">Guides</a>
-                    <a href="#" class="text-slate-300 hover:text-white">Changelog</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile drawer -->
-    <div id="mobile-drawer" class="fixed inset-0 z-50" aria-hidden="true">
-        <div id="drawer-backdrop" class="absolute inset-0 bg-black/50"></div>
-        <div id="drawer-panel" class="drawer-panel absolute right-0 top-0 h-full w-80 bg-slate-900 border-l border-slate-800 p-4 overflow-auto">
-            <div class="flex items-center justify-between mb-4">
-                <span class="sr-only">Navigation</span>
-                <button id="nav-close" aria-label="Close menu" class="p-1 text-slate-300 hover:bg-slate-800 rounded"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-            </div>
-            <nav class="flex flex-col gap-3" aria-label="Primary">
-                <a href="/" class="px-2 py-2 rounded hover:bg-slate-800">Projects</a>
-                <a href="/guides.html" class="px-2 py-2 rounded hover:bg-slate-800">Guides</a>
-                <a href="/changelog.html" class="px-2 py-2 rounded hover:bg-slate-800">Changelog</a>
-            </nav>
-        </div>
-    </div>
+    <div id="site-nav"></div>
 
     <!-- Main Content -->
     <main class="container mx-auto p-3 md:p-4 lg:p-8 max-w-7xl">
         <!-- Header -->
-        <div class="header-section">
-            <div class="text-center">
-                <h1 class="text-2xl md:text-3xl font-bold">Farms & Furnace Upgrade Calculator</h1>
-                <p class="mt-2 text-sm md:text-base text-slate-300">Calculate total gold needed to upgrade your Farms and Furnace</p>
-                
-                <!-- Quick Links -->
-                <div class="flex gap-2 md:gap-3 mt-3 md:mt-4 justify-center">
-                    <a href="./index.html" class="social-link text-sm md:text-base">
-                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                        <span>Elixir Calculator</span>
-                    </a>
-                    <a href="https://www.roblox.com/games/18645473062/Guild-War-V35-Cultivation-Mortal-to-Immortal" target="_blank" rel="noopener noreferrer" class="social-link text-sm md:text-base">
-                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.403 3.892L3.896 0 0 14.506l14.507 3.896L24 3.893z"/></svg>
-                        <span>Play</span>
-                    </a>
+        <div class="header-section mb-8">
+            <nav aria-label="Breadcrumb" class="mb-4 text-xs md:text-sm flex items-center gap-2 text-slate-400">
+                <a href="/" class="hover:text-slate-200">Cultivation Simulator Tools</a>
+                <span class="opacity-50">›</span>
+                <span class="text-slate-200 font-semibold" aria-current="page">Upgrade Calculator</span>
+            </nav>
+            <div class="relative rounded-2xl border border-slate-700/40 bg-slate-900/60 backdrop-blur-sm p-6 md:p-8">
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                    <div class="max-w-xl">
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-sky-400" aria-describedby="upgrade-desc">Farms & Furnace Upgrade Calculator</h1>
+                        <p id="upgrade-desc" class="mt-2 text-sm md:text-base text-slate-300">Estimate gold needed to reach target levels for your Farms and Furnace.</p>
+                        <!-- Header actions moved to top navigation to avoid redundancy -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,7 +62,7 @@
                         
                         <div class="input-group">
                             <label for="farms-qty">Number of Farms</label>
-                            <input type="number" id="farms-qty" class="input-field" min="1" max="5" placeholder="e.g. 5">
+                            <input type="number" id="farms-qty" class="input-field" value="1" min="1" max="5" placeholder="e.g. 5">
                         </div>
                     </div>
                 </div>
@@ -192,9 +148,8 @@
     </main>
 
     <!-- Scripts -->
-    <script src="./features/nav/nav.js" defer></script>
+    <!-- Nav dynamically injected; nav.js loaded by load-nav.js -->
     <script src="./features/upgrade-calculator/upgrade-data.js"></script>
     <script src="./features/upgrade-calculator/upgrade-calculator.js"></script>
-
 </body>
 </html>
