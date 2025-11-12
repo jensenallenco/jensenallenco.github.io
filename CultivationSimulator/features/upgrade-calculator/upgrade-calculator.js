@@ -27,10 +27,11 @@
     const maxAllBtn = document.getElementById('max-all-btn');
 
     // Calculate upgrade cost from current to target level
+    // Each entry in costsTable[level] is the cost to upgrade FROM that level TO the next
     function calculateUpgradeCost(currentLvl, targetLvl, costsTable) {
       if (currentLvl >= targetLvl) return 0;
       let total = 0;
-      for (let i = parseInt(currentLvl) + 1; i <= parseInt(targetLvl); i++) {
+      for (let i = parseInt(currentLvl); i < parseInt(targetLvl); i++) {
         total += costsTable[i] || 0;
       }
       return total;
@@ -66,33 +67,55 @@
       }
     }
 
-    // Populate the full cost table
+    // Populate the full cost table with running totals
     function populateTable() {
       tableBody.innerHTML = '';
+      
+      // Calculate running totals
+      let farmsRunningTotal = 0;
+      let furnaceRunningTotal = 0;
+      
       for (let lvl = 1; lvl <= 80; lvl++) {
+        const farmCost = farmsCosts[lvl] || 0;
+        const furnaceCost = furnaceCosts[lvl] || 0;
+        
+        farmsRunningTotal += farmCost;
+        furnaceRunningTotal += furnaceCost;
+        
         const row = document.createElement('tr');
         row.className = 'border-b border-slate-700/50 hover:bg-slate-800/40 transition-colors';
         row.dataset.level = lvl;
         
         row.innerHTML = `
           <td class="py-2 px-3 text-slate-300 font-medium">${lvl}</td>
-          <td class="py-2 px-3 text-green-400 font-mono">${formatNumber(farmsCosts[lvl] || 0)}</td>
-          <td class="py-2 px-3 text-orange-400 font-mono">${formatNumber(furnaceCosts[lvl] || 0)}</td>
+          <td class="py-2 px-3 text-green-400 font-mono text-xs md:text-sm">${formatNumber(farmCost)}</td>
+          <td class="py-2 px-3 text-orange-400 font-mono text-xs md:text-sm">${formatNumber(furnaceCost)}</td>
+          <td class="py-2 px-3 text-slate-400 font-mono text-xs md:text-sm">${formatNumber(farmsRunningTotal)}</td>
+          <td class="py-2 px-3 text-slate-400 font-mono text-xs md:text-sm">${formatNumber(furnaceRunningTotal)}</td>
         `;
         tableBody.appendChild(row);
       }
     }
 
-    // Highlight table rows based on current/target levels
+    // Highlight table rows based on current/target levels and show reactive cost ranges
     function updateTableHighlights(farmsCurrent, farmsTarget, furnaceCurrent, furnaceTarget) {
       const rows = tableBody.querySelectorAll('tr');
+      const farmsQty = parseInt(farmsQtyInput.value) || 5;
+      
       rows.forEach(row => {
         const lvl = parseInt(row.dataset.level);
-        row.classList.remove('bg-sky-900/20', 'ring-1', 'ring-sky-500/30');
+        row.classList.remove('bg-sky-900/20', 'ring-1', 'ring-sky-500/30', 'bg-green-900/10', 'ring-green-500/20', 'bg-orange-900/10', 'ring-orange-500/20');
         
-        // Highlight if level is in the range for either upgrade path
-        if ((lvl > farmsCurrent && lvl <= farmsTarget) || (lvl > furnaceCurrent && lvl <= furnaceTarget)) {
+        const inFarmsRange = lvl >= farmsCurrent && lvl < farmsTarget;
+        const inFurnaceRange = lvl >= furnaceCurrent && lvl < furnaceTarget;
+        
+        // Highlight based on which upgrade path includes this level
+        if (inFarmsRange && inFurnaceRange) {
           row.classList.add('bg-sky-900/20', 'ring-1', 'ring-sky-500/30');
+        } else if (inFarmsRange) {
+          row.classList.add('bg-green-900/10', 'ring-1', 'ring-green-500/20');
+        } else if (inFurnaceRange) {
+          row.classList.add('bg-orange-900/10', 'ring-1', 'ring-orange-500/20');
         }
       });
     }

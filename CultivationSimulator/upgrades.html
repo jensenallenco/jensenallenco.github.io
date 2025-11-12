@@ -170,12 +170,15 @@
             </button>
             
             <div id="table-section" class="hidden mt-4 overflow-x-auto">
-                <table class="w-full text-sm md:text-base">
+                <p class="text-sm text-slate-400 mb-3">💡 Highlighted rows show levels included in your selected upgrade range. Running totals show cumulative cost from level 1.</p>
+                <table class="w-full text-xs md:text-sm">
                     <thead class="sticky top-0 bg-slate-800 border-b-2 border-slate-600">
                         <tr>
-                            <th class="py-3 px-3 text-left text-slate-300 font-semibold">Level</th>
-                            <th class="py-3 px-3 text-left text-green-400 font-semibold">🌾 Farms Cost</th>
-                            <th class="py-3 px-3 text-left text-orange-400 font-semibold">🔥 Furnace Cost</th>
+                            <th class="py-3 px-2 md:px-3 text-left text-slate-300 font-semibold">Level</th>
+                            <th class="py-3 px-2 md:px-3 text-left text-green-400 font-semibold">🌾 Upgrade Cost</th>
+                            <th class="py-3 px-2 md:px-3 text-left text-orange-400 font-semibold">🔥 Upgrade Cost</th>
+                            <th class="py-3 px-2 md:px-3 text-left text-slate-400 font-semibold">🌾 Total (1→Lvl)</th>
+                            <th class="py-3 px-2 md:px-3 text-left text-slate-400 font-semibold">🔥 Total (1→Lvl)</th>
                         </tr>
                     </thead>
                     <tbody id="cost-table-body" class="divide-y divide-slate-700/30">
