@@ -63,6 +63,8 @@
 
       // Update table highlights if visible
       if (!tableSection.classList.contains('hidden')) {
+        // Rebuild table so it stays in sync with any changes to costs or range
+        populateTable();
         updateTableHighlights(farmsCurrent, farmsTarget, furnaceCurrent, furnaceTarget);
       }
     }
@@ -90,8 +92,6 @@
           <td class="py-2 px-3 text-slate-300 font-medium">${lvl}</td>
           <td class="py-2 px-3 text-green-400 font-mono text-xs md:text-sm">${formatNumber(farmCost)}</td>
           <td class="py-2 px-3 text-orange-400 font-mono text-xs md:text-sm">${formatNumber(furnaceCost)}</td>
-          <td class="py-2 px-3 text-slate-400 font-mono text-xs md:text-sm">${formatNumber(farmsRunningTotal)}</td>
-          <td class="py-2 px-3 text-slate-400 font-mono text-xs md:text-sm">${formatNumber(furnaceRunningTotal)}</td>
         `;
         tableBody.appendChild(row);
       }
