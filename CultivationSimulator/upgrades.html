@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Calculator - Cultivation Simulator</title>
+    <!-- Icon -->
+    <link rel="icon" type="image/webp" href="https://tr.rbxcdn.com/180DAY-e3b172c999c4bbc6ef671fcad60e51d0/256/256/Image/Webp/noFilter">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Top navigation -->
+    <nav class="sticky top-0 z-40 bg-slate-900/70 backdrop-blur-sm border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <a href="/" class="flex items-center gap-3">
+                        <span class="text-sky-400 font-bold">jensenallenco</span>
+                    </a>
+                </div>
+
+                <!-- Mobile hamburger toggle -->
+                <div class="flex items-center md:hidden">
+                    <button id="nav-toggle" aria-controls="mobile-drawer" aria-expanded="false" aria-label="Open navigation" class="-mr-2 inline-flex items-center justify-center rounded-md text-slate-300 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 p-2">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="hidden md:flex md:items-center md:space-x-6">
+                    <a href="/" class="text-slate-300 hover:text-white">Projects</a>
+                    <a href="#" class="text-slate-300 hover:text-white">Guides</a>
+                    <a href="#" class="text-slate-300 hover:text-white">Changelog</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile drawer -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50" aria-hidden="true">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black/50"></div>
+        <div id="drawer-panel" class="drawer-panel absolute right-0 top-0 h-full w-80 bg-slate-900 border-l border-slate-800 p-4 overflow-auto">
+            <div class="flex items-center justify-between mb-4">
+                <span class="sr-only">Navigation</span>
+                <button id="nav-close" aria-label="Close menu" class="p-1 text-slate-300 hover:bg-slate-800 rounded"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            <nav class="flex flex-col gap-3" aria-label="Primary">
+                <a href="/" class="px-2 py-2 rounded hover:bg-slate-800">Projects</a>
+                <a href="/guides.html" class="px-2 py-2 rounded hover:bg-slate-800">Guides</a>
+                <a href="/changelog.html" class="px-2 py-2 rounded hover:bg-slate-800">Changelog</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-3 md:p-4 lg:p-8 max-w-7xl">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="text-center">
+                <h1 class="text-2xl md:text-3xl font-bold">Farms & Furnace Upgrade Calculator</h1>
+                <p class="mt-2 text-sm md:text-base text-slate-300">Calculate total gold needed to upgrade your Farms and Furnace</p>
+                
+                <!-- Quick Links -->
+                <div class="flex gap-2 md:gap-3 mt-3 md:mt-4 justify-center">
+                    <a href="./index.html" class="social-link text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                        <span>Elixir Calculator</span>
+                    </a>
+                    <a href="https://www.roblox.com/games/18645473062/Guild-War-V35-Cultivation-Mortal-to-Immortal" target="_blank" rel="noopener noreferrer" class="social-link text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.403 3.892L3.896 0 0 14.506l14.507 3.896L24 3.893z"/></svg>
+                        <span>Play</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator Section -->
+        <div class="card">
+            <h2 class="section-title">Quick Calculator</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- Farms Input -->
+                <div class="bg-gradient-to-br from-green-900/20 to-slate-800/30 rounded-xl border border-green-700/30 p-4 md:p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-2xl">🌾</span>
+                        <h3 class="text-lg md:text-xl font-bold text-green-400">Farms</h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <label for="farms-current">Current Level</label>
+                            <input type="number" id="farms-current" class="input-field" min="1" max="79" value="1">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="farms-target">Target Level</label>
+                            <input type="number" id="farms-target" class="input-field" min="2" max="80" value="80">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="farms-qty">Number of Farms</label>
+                            <input type="number" id="farms-qty" class="input-field" min="1" max="10" value="5">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Furnace Input -->
+                <div class="bg-gradient-to-br from-orange-900/20 to-slate-800/30 rounded-xl border border-orange-700/30 p-4 md:p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-2xl">🔥</span>
+                        <h3 class="text-lg md:text-xl font-bold text-orange-400">Furnace</h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <label for="furnace-current">Current Level</label>
+                            <input type="number" id="furnace-current" class="input-field" min="1" max="79" value="1">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="furnace-target">Target Level</label>
+                            <input type="number" id="furnace-target" class="input-field" min="2" max="80" value="80">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-3 justify-center mb-6">
+                <button id="max-all-btn" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-semibold transition-colors">
+                    Max All (Lvl 80)
+                </button>
+                <button id="reset-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition-colors">
+                    Reset
+                </button>
+            </div>
+
+            <!-- Results Display -->
+            <div class="bg-gradient-to-br from-slate-800/60 to-slate-800/30 rounded-xl border border-slate-700/50 p-4 md:p-6">
+                <h3 class="text-lg md:text-xl font-bold text-slate-200 mb-4">💰 Cost Breakdown</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="stat-card border-green-700/30">
+                        <div class="stat-label text-green-400">Farms Total</div>
+                        <div class="stat-value text-green-400" id="farms-cost">0</div>
+                    </div>
+                    
+                    <div class="stat-card border-orange-700/30">
+                        <div class="stat-label text-orange-400">Furnace Total</div>
+                        <div class="stat-value text-orange-400" id="furnace-cost">0</div>
+                    </div>
+                    
+                    <div class="stat-card border-sky-700/30 ring-2 ring-sky-500/20">
+                        <div class="stat-label text-sky-400">Grand Total</div>
+                        <div class="stat-value text-sky-400 text-2xl md:text-3xl" id="total-cost">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expandable Table Section -->
+        <div class="card">
+            <button id="table-toggle" class="w-full text-left px-4 py-3 bg-slate-800/50 hover:bg-slate-800 rounded-lg transition-colors flex items-center justify-between font-semibold text-slate-200">
+                <span>▼ View Full Cost Table (Lvl 1-80)</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            
+            <div id="table-section" class="hidden mt-4 overflow-x-auto">
+                <table class="w-full text-sm md:text-base">
+                    <thead class="sticky top-0 bg-slate-800 border-b-2 border-slate-600">
+                        <tr>
+                            <th class="py-3 px-3 text-left text-slate-300 font-semibold">Level</th>
+                            <th class="py-3 px-3 text-left text-green-400 font-semibold">🌾 Farms Cost</th>
+                            <th class="py-3 px-3 text-left text-orange-400 font-semibold">🔥 Furnace Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cost-table-body" class="divide-y divide-slate-700/30">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="./features/nav/nav.js" defer></script>
+    <script src="./features/upgrade-calculator/upgrade-data.js"></script>
+    <script src="./features/upgrade-calculator/upgrade-calculator.js"></script>
+
+</body>
+</html>
