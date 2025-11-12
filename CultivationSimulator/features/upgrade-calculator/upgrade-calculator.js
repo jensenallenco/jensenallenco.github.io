@@ -23,8 +23,10 @@
     const tableBody = document.getElementById('cost-table-body');
     const tableToggle = document.getElementById('table-toggle');
     const tableSection = document.getElementById('table-section');
-    const resetBtn = document.getElementById('reset-btn');
-    const maxAllBtn = document.getElementById('max-all-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const farmsSet80Btn = document.getElementById('farms-set-80');
+  const furnaceSet80Btn = document.getElementById('furnace-set-80');
+  // Max All button removed per UX change
 
     // Calculate upgrade cost from current to target level
     // Each entry in costsTable[level] is the cost to upgrade FROM that level TO the next
@@ -45,15 +47,29 @@
     // Update all calculations
     function updateCalculations() {
       const farmsCurrent = parseInt(farmsCurrentInput.value) || 1;
-      const farmsTarget = parseInt(farmsTargetInput.value) || 80;
-      const farmsQty = parseInt(farmsQtyInput.value) || 5;
+      const farmsTarget = farmsTargetInput.value === '' ? null : (parseInt(farmsTargetInput.value) || null);
+      let farmsQty = farmsQtyInput.value === '' ? null : (parseInt(farmsQtyInput.value) || null);
+      if (farmsQty !== null) {
+        if (farmsQty < 1) farmsQty = 1;
+        if (farmsQty > 5) farmsQty = 5; // enforce max 5 farms
+      }
       const furnaceCurrent = parseInt(furnaceCurrentInput.value) || 1;
-      const furnaceTarget = parseInt(furnaceTargetInput.value) || 80;
+      const furnaceTarget = furnaceTargetInput.value === '' ? null : (parseInt(furnaceTargetInput.value) || null);
 
-      // Calculate costs
-      const farmsSingleCost = calculateUpgradeCost(farmsCurrent, farmsTarget, farmsCosts);
-      const farmsTotalCost = farmsSingleCost * farmsQty;
-      const furnaceTotalCost = calculateUpgradeCost(furnaceCurrent, furnaceTarget, furnaceCosts);
+      // If any required fields are missing, show 0 and skip calculations until user inputs
+      const hasFarms = farmsTarget !== null && farmsQty !== null;
+      const hasFurnace = furnaceTarget !== null;
+
+      let farmsTotalCost = 0;
+      let furnaceTotalCost = 0;
+
+      if (hasFarms) {
+        const farmsSingleCost = calculateUpgradeCost(farmsCurrent, farmsTarget, farmsCosts);
+        farmsTotalCost = farmsSingleCost * Math.max(1, farmsQty);
+      }
+      if (hasFurnace) {
+        furnaceTotalCost = calculateUpgradeCost(furnaceCurrent, furnaceTarget, furnaceCosts);
+      }
       const grandTotal = farmsTotalCost + furnaceTotalCost;
 
       // Update displays
@@ -61,11 +77,15 @@
       furnaceCostDisplay.textContent = formatNumber(furnaceTotalCost);
       totalCostDisplay.textContent = formatNumber(grandTotal);
 
-      // Update table highlights if visible
+      // Update table highlights if visible and we have valid ranges
       if (!tableSection.classList.contains('hidden')) {
-        // Rebuild table so it stays in sync with any changes to costs or range
         populateTable();
-        updateTableHighlights(farmsCurrent, farmsTarget, furnaceCurrent, furnaceTarget);
+        updateTableHighlights(
+          farmsCurrent,
+          hasFarms ? farmsTarget : farmsCurrent,
+          furnaceCurrent,
+          hasFurnace ? furnaceTarget : furnaceCurrent
+        );
       }
     }
 
@@ -142,22 +162,31 @@
     if (resetBtn) {
       resetBtn.addEventListener('click', function() {
         farmsCurrentInput.value = 1;
-        farmsTargetInput.value = 80;
-        farmsQtyInput.value = 5;
+        farmsTargetInput.value = '';
+        farmsQtyInput.value = '';
         furnaceCurrentInput.value = 1;
-        furnaceTargetInput.value = 80;
+        furnaceTargetInput.value = '';
         updateCalculations();
       });
     }
 
-    // Max All button
-    if (maxAllBtn) {
-      maxAllBtn.addEventListener('click', function() {
+    // Quick set buttons (80)
+    if (farmsSet80Btn) {
+      farmsSet80Btn.addEventListener('click', function() {
         farmsTargetInput.value = 80;
-        furnaceTargetInput.value = 80;
         updateCalculations();
+        farmsTargetInput.focus();
       });
     }
+    if (furnaceSet80Btn) {
+      furnaceSet80Btn.addEventListener('click', function() {
+        furnaceTargetInput.value = 80;
+        updateCalculations();
+        furnaceTargetInput.focus();
+      });
+    }
+
+    // Max All button removed
 
     // Attach input listeners
     [farmsCurrentInput, farmsTargetInput, farmsQtyInput, furnaceCurrentInput, furnaceTargetInput].forEach(input => {
@@ -166,7 +195,21 @@
       }
     });
 
-    // Initial calculation
-    updateCalculations();
+    // Reflect clamped farms quantity in the UI immediately
+    if (farmsQtyInput) {
+      function clampFarmsQty() {
+        if (farmsQtyInput.value === '') return; // allow empty
+        let v = parseInt(farmsQtyInput.value, 10);
+        if (isNaN(v)) { farmsQtyInput.value = ''; return; }
+        if (v < 1) v = 1;
+        if (v > 5) v = 5;
+        farmsQtyInput.value = v;
+      }
+      farmsQtyInput.addEventListener('input', clampFarmsQty);
+      farmsQtyInput.addEventListener('blur', clampFarmsQty);
+    }
+
+  // Initial state: show zeros until user inputs targets
+  updateCalculations();
   });
 })();
