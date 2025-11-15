@@ -307,3 +307,11 @@ body {
         transition: none !important;
     }
 }
+
+/* Small subtext for exact totals in the Elixir Totals card */
+.elixir-total-raw {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 600;
+    opacity: 0.95;
+}

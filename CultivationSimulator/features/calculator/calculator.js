@@ -91,6 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
         elixirData.stats.forEach(stat => {
             const totalEl = document.getElementById(`elixir-total-${stat.id}`);
             if(totalEl) totalEl.textContent = formatStatNumber(pointTotals[stat.id]);
+            const rawEl = document.getElementById(`elixir-total-raw-${stat.id}`);
+            if(rawEl) rawEl.textContent = (pointTotals[stat.id]).toLocaleString('en-US');
             const absorbTotalEl = document.getElementById(`elixir-absorb-total-${stat.id}`);
             if(absorbTotalEl) {
                 if (stat.isPercentage) {
@@ -144,9 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const pointDiv = document.createElement('div');
             pointDiv.className = "p-3 bg-slate-800/50 rounded-lg border border-slate-700";
             pointDiv.innerHTML = `
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center" style="flex-direction:column; align-items:flex-start; gap:6px;">
                     <div class="text-xs text-gray-400 uppercase tracking-wide">${stat.name}</div>
-                    <div id="elixir-total-${stat.id}" class="text-xl font-bold text-blue-400">0</div>
+                    <div style="display:flex;align-items:center;gap:0.75rem;">
+                        <div id="elixir-total-${stat.id}" class="text-xl font-bold text-blue-400">0</div>
+                        <div id="elixir-total-raw-${stat.id}" class="elixir-total-raw">0</div>
+                    </div>
                 </div>
             `;
             totalsContainer.appendChild(pointDiv);
@@ -172,6 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
             elixirData.stats.forEach(stat => {
                 const input = document.getElementById(`elixir-${rarity.id}-${stat.id}`);
                 input.addEventListener('input', calculateElixirTotals);
+                // select the whole value on focus so typing replaces the default "0"
+                input.addEventListener('focus', function() { this.select(); });
+                // prevent mouseup from deselecting the value after focus (keeps selection)
+                input.addEventListener('mouseup', function(e) { e.preventDefault(); });
             });
         });
 
