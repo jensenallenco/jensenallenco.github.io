@@ -1,6 +1,3 @@
-// Upgrade cost data for Farms and Furnace (Levels 1-80)
-// Data extracted from cultivation spreadsheet
-
 const farmsCosts = {
   1: 10996,
   2: 10999,
@@ -205,7 +202,6 @@ const furnaceCosts = {
   99: 10491000
 };
 
-// Export for use in calculator
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { farmsCosts, furnaceCosts };
 }

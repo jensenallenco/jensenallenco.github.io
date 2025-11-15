@@ -1,5 +1,3 @@
-// Navigation interactions (drawer + dropdown) and active state handling.
-// This file is loaded dynamically after the nav partial is injected.
 (function(){
   const toggleBtn = document.getElementById('nav-toggle');
   const drawer = document.getElementById('mobile-drawer');
@@ -8,9 +6,6 @@
   const toolsToggle = document.querySelector('nav button[aria-haspopup="true"]');
   const toolsMenu = toolsToggle ? toolsToggle.parentElement.querySelector('div.absolute') : null;
   let lastFocused = null;
-
-  // Drawer may be absent on some pages, but dropdown logic can still run.
-  // Don't return early so desktop dropdown still wires up.
 
   function getFocusable(container) {
     return Array.from(container.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])')).filter(el => !el.hasAttribute('disabled'));
@@ -22,7 +17,6 @@
     drawer.setAttribute('aria-hidden', 'false');
     if (toggleBtn) toggleBtn.setAttribute('aria-expanded','true');
     document.body.style.overflow = 'hidden';
-    // focus first focusable inside drawer
     const focusable = getFocusable(drawer)[0];
     if (focusable) focusable.focus();
   }
@@ -32,11 +26,9 @@
     drawer.setAttribute('aria-hidden', 'true');
     if (toggleBtn) toggleBtn.setAttribute('aria-expanded','false');
     document.body.style.overflow = '';
-    // restore focus
     if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
   }
 
-  // Tools dropdown accessibility (desktop)
   if (toolsToggle && toolsMenu) {
     let hoverTimer = null;
     function openTools() {
@@ -52,25 +44,21 @@
       }, delay);
     }
 
-    // Click toggles
     toolsToggle.addEventListener('click', (e)=>{
       e.preventDefault();
       const expanded = toolsToggle.getAttribute('aria-expanded') === 'true';
       expanded ? closeToolsDelayed(0) : openTools();
     });
 
-    // Hover persistence: keep open while hovering button or menu
     toolsToggle.addEventListener('mouseenter', openTools);
     toolsToggle.addEventListener('mouseleave', ()=>closeToolsDelayed());
     toolsMenu.addEventListener('mouseenter', openTools);
     toolsMenu.addEventListener('mouseleave', ()=>closeToolsDelayed());
 
-    // Focus management for keyboard users
     toolsToggle.addEventListener('focus', openTools);
     toolsMenu.addEventListener('focusin', openTools);
     toolsMenu.addEventListener('focusout', ()=>closeToolsDelayed());
 
-    // Click outside to close
     document.addEventListener('click', (e)=>{
       if (!toolsMenu.contains(e.target) && !toolsToggle.contains(e.target)) {
         closeToolsDelayed(0);
@@ -81,7 +69,6 @@
     });
   }
 
-  // Drawer wiring (guard if absent)
   if (drawer) {
     if (toggleBtn) {
       toggleBtn.addEventListener('click', ()=>{
@@ -92,7 +79,6 @@
     if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
     if (backdrop) backdrop.addEventListener('click', closeDrawer);
 
-    // Close on link click and trap focus
     drawer.addEventListener('click', (e)=>{
       const a = e.target.closest('a');
       if (a) {
@@ -101,7 +87,6 @@
       }
     });
 
-    // Focus trap
     drawer.addEventListener('keydown', (e)=>{
       if (e.key === 'Escape') { if (drawer.classList.contains('open')) closeDrawer(); return; }
       if (e.key !== 'Tab') return;
@@ -123,7 +108,6 @@
 
 })();
 
-// Active link logic encapsulated for manual invocation when dynamically loaded
 function setActiveNavLinks() {
   try {
     const links = Array.from(document.querySelectorAll('nav a'));

@@ -1,4 +1,3 @@
-// Injects the shared nav partial and then wires up its behaviors.
 (function(){
   const NAV_PARTIAL_PATH = './features/nav/nav.html';
   const NAV_SCRIPT_PATH = './features/nav/nav.js';
@@ -9,7 +8,7 @@
       if (!container) {
         container = document.createElement('div');
         container.id = 'site-nav';
-        // Insert as the first element inside <body>
+
         const body = document.body || document.getElementsByTagName('body')[0];
         if (body.firstChild) body.insertBefore(container, body.firstChild); else body.appendChild(container);
       }
@@ -18,7 +17,7 @@
       const html = await res.text();
       container.innerHTML = html;
       await loadNavScript();
-      // Ensure active links are set if exposed globally
+
       if (typeof setActiveNavLinks === 'function') {
         setActiveNavLinks();
       }
@@ -29,11 +28,10 @@
 
   function loadNavScript() {
     return new Promise((resolve, reject) => {
-      // Avoid double-loading
       if (document.querySelector('script[data-nav-script]')) return resolve();
       const s = document.createElement('script');
       s.src = NAV_SCRIPT_PATH;
-      s.async = false; // maintain execution order
+      s.async = false;
       s.setAttribute('data-nav-script','true');
       s.onload = () => resolve();
       s.onerror = (e) => reject(e);

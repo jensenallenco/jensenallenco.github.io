@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Elixir Calculator Logic (moved from inline) ---
     const elixirData = {
         rarities: [
             { id: 'common', name: 'Common', value: 1, defaultChecked: false },
@@ -178,7 +177,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
         calculateElixirTotals();
     }
-
-    // Initialize calculator
     initElixirCalculator();
 });

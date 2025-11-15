@@ -24,17 +24,13 @@
                 <span class="text-slate-200 font-semibold" aria-current="page">Elixir Calculator</span>
             </nav>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 items-start">
-                <!-- Left: Title and Info -->
                 <div class="lg:col-span-1 relative rounded-2xl border border-slate-700/40 bg-slate-900/60 backdrop-blur-sm p-5 md:p-6">
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-sky-400" aria-describedby="elixir-desc">Elixir Calculator</h1>
                     <p id="elixir-desc" class="mt-2 text-sm md:text-base text-slate-300">Calculate total point allocations and absorb stats from your selected elixirs.</p>
-                    <!-- Header actions moved to top navigation to avoid redundancy -->
                 </div>
 
-                <!-- Right: Rarity Point Values Table -->
                 <div class="lg:col-span-2 bg-gradient-to-br from-slate-800/60 to-slate-800/30 rounded-2xl border border-slate-700/50 p-3 md:p-5 shadow-lg">
                     <h3 class="text-sm md:text-base font-semibold text-slate-200 mb-3 md:mb-4">Rarity Point Values</h3>
-                    <!-- First row: 6 items (Common to Scarce) -->
                     <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 sm:gap-2.5 mb-1.5 sm:mb-2.5">
                         <div class="flex flex-col items-center p-1.5 sm:p-2.5 bg-slate-900/60 rounded-lg border border-slate-700/40 hover:border-gray-500/50 hover:bg-slate-900/80 transition-all duration-200">
                             <span class="text-[10px] sm:text-xs text-gray-400 font-semibold mb-0.5">Common</span>
@@ -61,7 +57,7 @@
                             <span class="text-xs sm:text-sm text-gray-200 font-medium">6</span>
                         </div>
                     </div>
-                    <!-- Second row: 5 items (Epic to Eternal) -->
+
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-1.5 sm:gap-2.5">
                         <div class="flex flex-col items-center p-1.5 sm:p-2.5 bg-slate-900/60 rounded-lg border border-slate-700/40 hover:border-orange-500/50 hover:bg-slate-900/80 transition-all duration-200">
                             <span class="text-[10px] sm:text-xs text-orange-400 font-semibold mb-0.5">Epic</span>
@@ -94,23 +90,19 @@
             <div id="elixir-checkbox-container" class="flex flex-wrap gap-3 justify-center"></div>
         </div>
 
-        <!-- Two Column Layout: Inputs on left, Results on right -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-            <!-- Left Column: Elixir Inputs (2/3 width) -->
+
             <div class="lg:col-span-2">
                 <div id="elixir-sections-container" class="space-y-3 md:space-y-4"></div>
             </div>
 
-            <!-- Right Column: Results (1/3 width, sticky) -->
             <div class="lg:col-span-1">
                 <div class="sticky-results space-y-3 md:space-y-4">
-                    <!-- Total Points Section -->
                     <div class="card">
                         <h2 class="section-title text-base md:text-lg">Total Points</h2>
                         <div id="elixir-totals-container" class="grid grid-cols-1 gap-2 md:gap-3"></div>
                     </div>
 
-                    <!-- Total Absorb Stats Section -->
                     <div class="card">
                         <h2 class="section-title text-base md:text-lg">Total Absorb Stats</h2>
                         <div id="elixir-absorb-totals-container" class="grid grid-cols-1 gap-2 md:gap-3"></div>
