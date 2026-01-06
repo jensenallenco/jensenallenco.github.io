@@ -107,6 +107,57 @@
                         <h2 class="section-title text-base md:text-lg">Total Absorb Stats</h2>
                         <div id="elixir-absorb-totals-container" class="grid grid-cols-1 gap-2 md:gap-3"></div>
                     </div>
+
+                    <!-- Target Calculator -->
+                    <div class="card">
+                        <h2 class="section-title text-base md:text-lg">🎯 Target Calculator</h2>
+                        <p class="text-xs text-slate-400 mb-4">Calculate how many elixirs you need from your inventory to reach a specific stat value.</p>
+                        
+                        <div class="space-y-4">
+                            <!-- Target Input -->
+                            <div>
+                                <label class="text-xs text-gray-400 uppercase tracking-wide mb-2 block">I want to use exactly:</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="target-value" class="input-field" placeholder="Enter value" min="0">
+                                    <select id="target-stat" class="input-field">
+                                        <option value="attack">Attack</option>
+                                        <option value="critdmg">Crit DMG</option>
+                                        <option value="talismanDmg">Talisman DMG</option>
+                                        <option value="hp">HP</option>
+                                        <option value="skilldmg">Skill DMG</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Strategy Selection -->
+                            <div>
+                                <label class="text-xs text-gray-400 uppercase tracking-wide mb-2 block">Strategy:</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="target-strategy" value="highest" checked class="w-4 h-4 text-blue-500">
+                                        <span class="text-sm text-slate-300">Use highest rarities first</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="target-strategy" value="lowest" class="w-4 h-4 text-blue-500">
+                                        <span class="text-sm text-slate-300">Use lowest rarities first</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Calculate Button -->
+                            <button id="calculate-target-btn" class="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">
+                                Calculate
+                            </button>
+
+                            <!-- Results -->
+                            <div id="target-results" class="hidden">
+                                <div class="border-t border-slate-700 pt-4">
+                                    <h3 class="text-xs text-gray-400 uppercase tracking-wide mb-3">Results</h3>
+                                    <div id="target-results-content" class="space-y-2 text-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

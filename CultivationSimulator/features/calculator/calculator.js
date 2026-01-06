@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sturdy: { bg: '#06b6d4', text: '#ffffff' },
             rare: { bg: '#22c55e', text: '#ffffff' },
             perfect: { bg: '#3b82f6', text: '#ffffff' },
-            scarce: { bg: '#8b5cf6', text: '#ffffff' },
+            scarce: { bg: '#f472b6', text: '#ffffff' },
             epic: { bg: '#f97316', text: '#ffffff' },
             legendary: { bg: '#a855f7', text: '#ffffff' },
             immortal: { bg: '#ec4899', text: '#ffffff' },
@@ -187,4 +187,137 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateElixirTotals();
     }
     initElixirCalculator();
+
+    // Target Calculator functionality
+    function calculateTargetElixirs() {
+        const targetValue = parseFloat(document.getElementById('target-value').value) || 0;
+        const targetStat = document.getElementById('target-stat').value;
+        const strategy = document.querySelector('input[name="target-strategy"]:checked').value;
+        const resultsContainer = document.getElementById('target-results');
+        const resultsContent = document.getElementById('target-results-content');
+
+        if (targetValue <= 0) {
+            resultsContainer.classList.add('hidden');
+            return;
+        }
+
+        // Get current inventory from user inputs (using POINTS, not absorb stats)
+        const inventory = {};
+        elixirData.rarities.forEach(rarity => {
+            const checkbox = document.getElementById(`elixir-check-${rarity.id}`);
+            if (checkbox && checkbox.checked) {
+                const input = document.getElementById(`elixir-${rarity.id}-${targetStat}`);
+                const count = parseInt(input.value) || 0;
+                if (count > 0) {
+                    inventory[rarity.id] = {
+                        count: count,
+                        pointValue: rarity.value, // Use rarity point value (1, 2, 3, etc.)
+                        rarity: rarity.name
+                    };
+                }
+            }
+        });
+
+        // Sort rarities based on strategy (by point value)
+        let sortedRarities = Object.keys(inventory).sort((a, b) => {
+            if (strategy === 'highest') {
+                return inventory[b].pointValue - inventory[a].pointValue; // Descending
+            } else {
+                return inventory[a].pointValue - inventory[b].pointValue; // Ascending
+            }
+        });
+
+        // Calculate which elixirs to use
+        let remaining = targetValue;
+        const usedElixirs = [];
+        let totalProvided = 0;
+
+        for (const rarityId of sortedRarities) {
+            const elixir = inventory[rarityId];
+            if (remaining <= 0) break;
+
+            const neededCount = Math.ceil(remaining / elixir.pointValue);
+            const useCount = Math.min(neededCount, elixir.count);
+            const provided = useCount * elixir.pointValue;
+
+            if (useCount > 0) {
+                usedElixirs.push({
+                    rarity: elixir.rarity,
+                    count: useCount,
+                    points: provided,
+                    available: elixir.count
+                });
+                totalProvided += provided;
+                remaining -= provided;
+            }
+        }
+
+        // Display results
+        resultsContent.innerHTML = '';
+
+        // Check if we have enough
+        const hasEnough = totalProvided >= targetValue;
+        
+        if (!hasEnough) {
+            resultsContent.innerHTML = `
+                <div class="p-3 bg-red-900/30 border border-red-700/50 rounded-lg">
+                    <div class="flex items-start gap-2">
+                        <span class="text-red-400 text-lg">⚠️</span>
+                        <div>
+                            <div class="text-red-400 font-semibold mb-1">Insufficient Inventory</div>
+                            <div class="text-xs text-red-300">You need ${formatStatNumber(targetValue)} but can only provide ${formatStatNumber(totalProvided)} from your current inventory.</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            const statInfo = elixirData.stats.find(s => s.id === targetStat);
+            const totalElixirs = usedElixirs.reduce((sum, e) => sum + e.count, 0);
+
+            let resultHTML = `
+                <div class="p-3 bg-green-900/20 border border-green-700/50 rounded-lg mb-3">
+                    <div class="text-green-400 font-semibold mb-1">Target: ${formatStatNumber(targetValue)} ${statInfo.shortName} points</div>
+                    <div class="text-xs text-green-300">Using ${totalElixirs.toLocaleString()} total elixirs</div>
+                </div>
+            `;
+
+            usedElixirs.forEach(elixir => {
+                resultHTML += `
+                    <div class="p-2.5 bg-slate-800/50 border border-slate-700 rounded-lg">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-slate-300 font-medium">${elixir.rarity}:</span>
+                            <span class="text-blue-400 font-semibold">${elixir.count.toLocaleString()} elixirs</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400">${formatStatNumber(elixir.points)} points</span>
+                            <span class="text-slate-500">(have ${elixir.available.toLocaleString()})</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Show if there's excess
+            if (totalProvided > targetValue) {
+                const excess = totalProvided - targetValue;
+                    
+                resultHTML += `
+                    <div class="p-2 bg-yellow-900/20 border border-yellow-700/50 rounded-lg mt-2">
+                        <div class="text-xs text-yellow-300">
+                            ℹ️ Actual total: ${formatStatNumber(totalProvided)} points (excess: ${formatStatNumber(excess)})
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultsContent.innerHTML = resultHTML;
+        }
+
+        resultsContainer.classList.remove('hidden');
+    }
+
+    // Event listeners for target calculator
+    const calculateTargetBtn = document.getElementById('calculate-target-btn');
+    if (calculateTargetBtn) {
+        calculateTargetBtn.addEventListener('click', calculateTargetElixirs);
+    }
 });
