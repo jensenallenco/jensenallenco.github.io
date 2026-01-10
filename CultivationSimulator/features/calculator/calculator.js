@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'eternal', name: 'Eternal', value: 28, defaultChecked: false }
         ],
         stats: [
-            { id: 'attack', name: 'Attack', shortName: 'ATK', isPercentage: false, decimals: 0 },
-            { id: 'critdmg', name: 'Critical Hit Damage', shortName: 'Crit DMG', isPercentage: true, decimals: 3 },
-            { id: 'talismanDmg', name: 'Talisman Damage', shortName: 'Talisman DMG', isPercentage: true, decimals: 3 },
+            { id: 'skilldmg', name: 'Skill Damage', shortName: 'Skill DMG', isPercentage: true, decimals: 3 },
             { id: 'hp', name: 'HP', shortName: 'HP', isPercentage: false, decimals: 0 },
-            { id: 'skilldmg', name: 'Skill Damage', shortName: 'Skill DMG', isPercentage: true, decimals: 3 }
+            { id: 'talismanDmg', name: 'Talisman Damage', shortName: 'Talisman DMG', isPercentage: true, decimals: 3 },
+            { id: 'critdmg', name: 'Critical Hit Damage', shortName: 'Crit DMG', isPercentage: true, decimals: 3 },
+            { id: 'attack', name: 'Attack', shortName: 'ATK', isPercentage: false, decimals: 0 }
         ],
         colors: {
             common: { bg: '#9ca3af', text: '#1f2937' },
@@ -55,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalsContainer = document.getElementById('elixir-totals-container');
     const absorbTotalsContainer = document.getElementById('elixir-absorb-totals-container');
 
+    const conversionNumberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 });
+
     function formatStatNumber(num) {
         if (num >= 1000000000) {
             return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
@@ -66,6 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
         }
         return num.toLocaleString('id-ID');
+    }
+
+    function formatConversionNumber(num) {
+        return conversionNumberFormat.format(num);
     }
 
     function calculateElixirTotals() {
@@ -319,5 +325,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const calculateTargetBtn = document.getElementById('calculate-target-btn');
     if (calculateTargetBtn) {
         calculateTargetBtn.addEventListener('click', calculateTargetElixirs);
+    }
+
+    // Conversion calculator functionality
+    function calculateConversion() {
+        const ratioAInput = document.getElementById('conversion-ratio-a');
+        const ratioBInput = document.getElementById('conversion-ratio-b');
+        const amountInput = document.getElementById('conversion-amount');
+        const directionSelect = document.getElementById('conversion-direction');
+        const errorBox = document.getElementById('conversion-error');
+        const resultBox = document.getElementById('conversion-result');
+
+        if (!ratioAInput || !ratioBInput || !amountInput || !directionSelect || !errorBox || !resultBox) {
+            return;
+        }
+
+        errorBox.classList.add('hidden');
+        resultBox.classList.add('hidden');
+
+        const ratioA = parseFloat(ratioAInput.value);
+        const ratioB = parseFloat(ratioBInput.value);
+        const amount = parseFloat(amountInput.value);
+        const direction = directionSelect.value;
+
+        if (!ratioA || !ratioB || !amount || ratioA <= 0 || ratioB <= 0 || amount <= 0) {
+            errorBox.textContent = 'Please enter positive numbers for both ratio values and the amount.';
+            errorBox.classList.remove('hidden');
+            return;
+        }
+
+        const fromLabel = direction === 'BtoA' ? 'B' : 'A';
+        const toLabel = direction === 'BtoA' ? 'A' : 'B';
+        const rate = direction === 'BtoA' ? ratioA / ratioB : ratioB / ratioA;
+        const convertedAmount = amount * rate;
+
+        resultBox.innerHTML = `
+            <div class="font-semibold text-blue-300 mb-1">${formatConversionNumber(amount)} ${fromLabel} → ${formatConversionNumber(convertedAmount)} ${toLabel}</div>
+            <div class="text-xs text-slate-400">Using ratio ${formatConversionNumber(ratioA)} ${fromLabel} : ${formatConversionNumber(ratioB)} ${toLabel} (rate ${formatConversionNumber(rate)} ${toLabel} per ${fromLabel})</div>
+        `;
+        resultBox.classList.remove('hidden');
+    }
+
+    const conversionBtn = document.getElementById('conversion-calc-btn');
+    if (conversionBtn) {
+        conversionBtn.addEventListener('click', calculateConversion);
     }
 });

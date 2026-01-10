@@ -120,11 +120,11 @@
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="target-value" class="input-field" placeholder="Enter value" min="0">
                                     <select id="target-stat" class="input-field">
-                                        <option value="attack">Attack</option>
-                                        <option value="critdmg">Crit DMG</option>
-                                        <option value="talismanDmg">Talisman DMG</option>
-                                        <option value="hp">HP</option>
                                         <option value="skilldmg">Skill DMG</option>
+                                        <option value="hp">HP</option>
+                                        <option value="talismanDmg">Talisman DMG</option>
+                                        <option value="critdmg">Crit DMG</option>
+                                        <option value="attack">Attack</option>
                                     </select>
                                 </div>
                             </div>
@@ -156,6 +156,44 @@
                                     <div id="target-results-content" class="space-y-2 text-sm"></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Conversion Calculator -->
+                    <div class="card">
+                        <h2 class="section-title text-base md:text-lg">🧪 Elixir Conversion</h2>
+                        <p class="text-xs text-slate-400 mb-4">Convert any resource pair using a custom ratio. Enter the two ratio values and the amount you are converting, then compute.</p>
+
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-gray-400 uppercase tracking-wide mb-2 block" for="conversion-ratio-a">Ratio A</label>
+                                    <input type="number" id="conversion-ratio-a" class="input-field" min="0" step="0.01" value="1">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-400 uppercase tracking-wide mb-2 block" for="conversion-ratio-b">Ratio B</label>
+                                    <input type="number" id="conversion-ratio-b" class="input-field" min="0" step="0.01" value="2.5">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-gray-400 uppercase tracking-wide mb-2 block" for="conversion-amount">Amount</label>
+                                    <input type="number" id="conversion-amount" class="input-field" min="0" step="0.01" placeholder="Enter amount">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-400 uppercase tracking-wide mb-2 block" for="conversion-direction">Convert From</label>
+                                    <select id="conversion-direction" class="input-field">
+                                        <option value="AtoB">A → B</option>
+                                        <option value="BtoA">B → A</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button id="conversion-calc-btn" class="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">Compute</button>
+
+                            <div id="conversion-error" class="hidden text-xs text-red-300 bg-red-900/30 border border-red-700/50 rounded-lg px-3 py-2"></div>
+                            <div id="conversion-result" class="hidden text-sm text-slate-100 bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-3"></div>
                         </div>
                     </div>
                 </div>
